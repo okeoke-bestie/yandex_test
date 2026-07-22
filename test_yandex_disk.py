@@ -33,7 +33,6 @@ class TestYandexDiskAPI:
 
     def test_copy_resource(self, api_client, test_folder_path):
         """POST: Копирование файла или папки (метод POST используется для операции copy)."""
-        # Гарантируем существование исходной папки для независимости теста
         encoded_path = urllib.parse.quote(test_folder_path, safe="")
         api_client.put(f"{BASE_URL}/resources", params={"path": encoded_path})
         
@@ -49,12 +48,11 @@ class TestYandexDiskAPI:
             }
         )
         
-        # API может вернуть 201 Created или 202 Accepted (для асинхронных операций)
+        # API может вернуть 201 Created или 202 Accepted 
         assert response.status_code in [201, 202], f"Ожидался код 201 или 202, получен {response.status_code}"
 
     def test_delete_resource(self, api_client, test_folder_path):
         """DELETE: Безвозвратное удаление файла или папки."""
-        # Создаем ресурс специально для этого теста, чтобы он был полностью независимым
         encoded_path = urllib.parse.quote(test_folder_path, safe="")
         api_client.put(f"{BASE_URL}/resources", params={"path": encoded_path})
         
@@ -66,9 +64,9 @@ class TestYandexDiskAPI:
             }
         )
         
-        # API возвращает 204 No Content (для файлов/пустых папок) или 202 Accepted (для непустых)
+        # API возвращает 204 No Content (для пустых папок или файлов) или 202 Accepted (для непустых)
         assert response.status_code in [202, 204], f"Ожидался код 202 или 204, получен {response.status_code}"
         
-        # Дополнительная проверка: убеждаемся, что ресурс действительно удален
+        # Доп проверка
         get_response = api_client.get(f"{BASE_URL}/resources", params={"path": encoded_path})
         assert get_response.status_code == 404, "Ресурс должен быть удален и возвращать статус 404 Not Found"
