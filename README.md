@@ -1,4 +1,4 @@
-yandex-disk-api-tests**# Автотесты для API Яндекс.Диска
+yandex-disk-api-tests Автотесты для API Яндекс.Диска
 
 Данный проект представляет собой набор автоматизированных тестов для проверки работы основных методов (GET, POST, PUT, DELETE) REST API Яндекс.Диска (`https://cloud-api.yandex.net`).
 
