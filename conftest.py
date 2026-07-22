@@ -5,7 +5,6 @@ import pytest
 import requests
 from dotenv import load_dotenv
 
-# Загружаем переменные окружения из файла .env, если он существует
 load_dotenv()
 
 BASE_URL = "https://cloud-api.yandex.net/v1/disk"
@@ -37,10 +36,10 @@ def test_folder_path():
 def cleanup_resources(api_client, test_folder_path):
     """Автоматическая очистка тестовых ресурсов после выполнения каждого теста."""
     yield
-    # Удаляем созданные ресурсы в обратном порядке (сначала копию, потом оригинал)
+    # Удаление ресурсов в обратном порядке
     for path in [f"{test_folder_path}_copy", test_folder_path]:
         encoded_path = urllib.parse.quote(path, safe="")
-        # Игнорируем ошибки, если ресурс уже был удален или не существовал (например, при падении теста до создания)
+        # Игнорирование ошибок
         api_client.delete(
             f"{BASE_URL}/resources",
             params={"path": encoded_path, "permanently": "true"}
